@@ -62,6 +62,18 @@ export function useTodos(store) {
     [attempt, store],
   )
 
+  const clearCompleted = useCallback(
+    () =>
+      attempt(async () => {
+        await store.clearCompleted()
+        setTodos((current) => {
+          const doneIds = new Set(current.filter((todo) => todo.completed).map((todo) => todo.id))
+          return current.filter((todo) => !doneIds.has(todo.id) && !doneIds.has(todo.parent_id))
+        })
+      }, "Couldn't clear completed tasks."),
+    [attempt, store],
+  )
+
   return {
     todos,
     loading,
@@ -70,5 +82,6 @@ export function useTodos(store) {
     addTodo,
     updateTodo,
     deleteTodo,
+    clearCompleted,
   }
 }

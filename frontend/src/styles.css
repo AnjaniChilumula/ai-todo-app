@@ -414,6 +414,16 @@ select {
   font-weight: 400;
 }
 
+.list-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--muted-2);
+}
+
 /* ---------- Empty, loading and error states ---------- */
 
 .empty-state {

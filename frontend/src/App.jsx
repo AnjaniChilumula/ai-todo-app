@@ -6,6 +6,7 @@ import EmptyState from './components/EmptyState.jsx'
 import ErrorAlert from './components/ErrorAlert.jsx'
 import FilterTabs from './components/FilterTabs.jsx'
 import Header from './components/Header.jsx'
+import ListFooter from './components/ListFooter.jsx'
 import StatusPill from './components/StatusPill.jsx'
 import TodoList from './components/TodoList.jsx'
 import { useTodos } from './hooks/useTodos.js'
@@ -20,7 +21,8 @@ const EMPTY_FILTER_MESSAGES = {
 export default function App({ store = defaultStore }) {
   const [aiStatus, setAiStatus] = useState('checking')
   const [filter, setFilter] = useState('all')
-  const { todos, loading, error, dismissError, addTodo, updateTodo, deleteTodo } = useTodos(store)
+  const { todos, loading, error, dismissError, addTodo, updateTodo, deleteTodo, clearCompleted } =
+    useTodos(store)
   const { topLevel, subtasksByParent } = groupTasks(todos)
   const visible = filterTasks(topLevel, filter)
   const counts = countTasks(topLevel)
@@ -70,6 +72,13 @@ export default function App({ store = defaultStore }) {
         <FilterTabs filter={filter} counts={counts} onChange={setFilter} />
       )}
       {content}
+      {!loading && topLevel.length > 0 && (
+        <ListFooter
+          remaining={counts.active}
+          completed={todos.filter((todo) => todo.completed).length}
+          onClearCompleted={clearCompleted}
+        />
+      )}
     </main>
   )
 }
