@@ -8,6 +8,9 @@ class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
+    # SQLite file, created next to where the server is started (backend/).
+    database_url: str = "sqlite:///./todos.db"
+
     # Origins allowed to call the API from a browser (the Vite dev server by default).
     cors_origins: list[str] = ["http://localhost:5173"]
 

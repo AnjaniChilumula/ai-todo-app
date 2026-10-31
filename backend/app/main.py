@@ -1,13 +1,23 @@
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 from typing import Annotated
 
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app import db
 from app.config import Settings, get_settings
 
 SettingsDep = Annotated[Settings, Depends(get_settings)]
 
-app = FastAPI(title="AI Todo App API", version="0.1.0")
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
+    db.init_db()
+    yield
+
+
+app = FastAPI(title="AI Todo App API", version="0.1.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
