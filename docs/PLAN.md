@@ -1,6 +1,6 @@
 # AI Todo App — Project Plan
 
-**Author:** Anjani Chilumula · **Status:** Approved, 31 Oct 2026
+**Author:** Anjani Chilumula · **Status:** Approved and delivered, 31 Oct 2026 (all milestones M0–M9 merged)
 
 ## 1. Goal
 
@@ -194,7 +194,7 @@ The live demo appears after M6 and is updated by every later merge.
 | Item | Status | Action |
 |---|---|---|
 | Python 3.11 | ✅ installed (3.11.5) | — |
-| Node.js | ⚠️ 20.3.0 installed; current Vite needs 20.19+ | Upgrade to Node 22 LTS before M3 (`winget install OpenJS.NodeJS.LTS`) |
+| Node.js | ⚠️ 20.3.0 installed | Vite 6 was pinned so the app runs on 20.3. ESLint 10 needs 20.19+ for its text output (CI uses Node 22). Upgrading to Node 22 LTS is still recommended (`winget install OpenJS.NodeJS.LTS`) |
 | GitHub CLI | ✅ signed in as AnjaniChilumula | — |
 | Anthropic API key | ❌ not set | Needed only from M7; you add it to `backend/.env` |
 | Project is inside OneDrive | ⚠️ `Documents` syncs to OneDrive | `node_modules/` and `.venv/` hold thousands of files; consider pausing sync for this folder or moving it out of OneDrive |

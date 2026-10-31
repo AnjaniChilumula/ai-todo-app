@@ -52,6 +52,16 @@ export function InfoIcon(props) {
   )
 }
 
+export function MoreIcon(props) {
+  return (
+    <Icon {...props}>
+      <circle cx="12" cy="5" r="1.4" fill="currentColor" />
+      <circle cx="12" cy="12" r="1.4" fill="currentColor" />
+      <circle cx="12" cy="19" r="1.4" fill="currentColor" />
+    </Icon>
+  )
+}
+
 export function PencilIcon(props) {
   return (
     <Icon {...props}>
