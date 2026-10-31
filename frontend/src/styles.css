@@ -121,6 +121,58 @@ select {
   background: var(--grey);
 }
 
+/* ---------- AI off banner ---------- */
+
+.banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+}
+
+.banner-text {
+  flex: 1 1 360px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+  color: var(--muted-2);
+}
+
+.banner-text svg {
+  flex: none;
+  margin-top: 1px;
+}
+
+.banner-text p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.banner code {
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: var(--bg);
+  font-size: 13px;
+}
+
+.banner-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target);
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.banner-link:hover {
+  color: var(--accent-text);
+}
+
 /* ---------- Shared building blocks ---------- */
 
 .card {

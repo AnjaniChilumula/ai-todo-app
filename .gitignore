@@ -8,10 +8,11 @@ venv/
 .coverage
 htmlcov/
 
-# Environment files and secrets (only .env.example is committed)
+# Environment files and secrets (only .env.example and the secret-free frontend .env.demo are committed)
 .env
 .env.*
 !.env.example
+!frontend/.env.demo
 
 # Local databases
 *.db

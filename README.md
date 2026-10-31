@@ -9,6 +9,15 @@ It is being built in small, reviewed milestones: one pull request per milestone.
 
 ![Task list wireframe](docs/wireframes/1-task-list.png)
 
+## Live demo
+
+**https://anjanichilumula.github.io/ai-todo-app/**
+
+The demo runs entirely in your browser: tasks are saved in your browser's local storage and the AI features are off,
+because GitHub Pages can't run the Python backend (and an API key must never be put in a public website).
+To use AI, run the app locally (below). Every merge to `main` redeploys the demo
+(`.github/workflows/deploy-pages.yml`); build it yourself with `npm run build:demo`.
+
 ## Docs
 
 - [Project plan](docs/PLAN.md): scope, stack, architecture, API, AI design, milestones
@@ -80,11 +89,9 @@ The same checks run on every pull request (see `.github/workflows/ci.yml`).
 | M2 | Todos API (SQLite, CRUD) | Done |
 | M3 | Frontend skeleton, tests, CI | Done |
 | M4 | Task list: add, complete, delete, subtasks | Done |
-| M5 | Editing, due dates, priority, filters | In review |
-| M6 | Live demo on GitHub Pages | Planned |
+| M5 | Editing, due dates, priority, filters | Done |
+| M6 | Live demo on GitHub Pages | In review |
 | M7–M9 | AI features and polish | Planned |
-
-The live demo will be at **https://anjanichilumula.github.io/ai-todo-app/** once M6 is merged.
 
 ## License
 
