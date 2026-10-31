@@ -52,6 +52,24 @@ Tasks are stored in `backend/todos.db` (SQLite), created on first start.
 
 Dates are returned in UTC (ending in `Z`).
 
+### Turn on the AI features
+
+1. Create an API key at https://console.anthropic.com/ (API usage is billed by Anthropic).
+2. In `backend/.env` (copied from `.env.example`), set `ANTHROPIC_API_KEY=...`. The file is git-ignored, so the key
+   never reaches GitHub.
+3. Restart the backend. `/api/health` now reports `"ai_enabled": true`.
+
+The AI endpoints only *suggest*; nothing is saved until you confirm in the UI.
+
+| Method | Path | What it does |
+|---|---|---|
+| POST | `/api/ai/parse` | `{"text": "call mom tomorrow 6pm, high priority", "timezone": "Asia/Kolkata"}` → suggested `title`, `due_at`, `priority`, `notes` |
+| POST | `/api/ai/breakdown` | `{"todo_id": 1}` → `{"subtasks": [...]}`, skipping subtasks the task already has |
+
+They use **Claude Opus 5.5** (`ANTHROPIC_MODEL` to change it) with structured outputs, so answers always match the
+expected fields. All Claude calls live in `backend/app/ai/client.py`. Without a key they return `503` with setup
+instructions. Tests never call the real API.
+
 ## Run the frontend
 
 Requires Node.js 20+ (22 LTS recommended). Start the backend first, then in a second terminal:
@@ -90,8 +108,9 @@ The same checks run on every pull request (see `.github/workflows/ci.yml`).
 | M3 | Frontend skeleton, tests, CI | Done |
 | M4 | Task list: add, complete, delete, subtasks | Done |
 | M5 | Editing, due dates, priority, filters | Done |
-| M6 | Live demo on GitHub Pages | In review |
-| M7–M9 | AI features and polish | Planned |
+| M6 | Live demo on GitHub Pages | Done |
+| M7 | AI endpoints: Smart Add parsing, subtask suggestions | In review |
+| M8–M9 | AI in the UI, polish | Planned |
 
 ## License
 
