@@ -79,8 +79,8 @@ The same checks run on every pull request (see `.github/workflows/ci.yml`).
 | M1 | Backend skeleton, settings, tests, CI | Done |
 | M2 | Todos API (SQLite, CRUD) | Done |
 | M3 | Frontend skeleton, tests, CI | Done |
-| M4 | Task list: add, complete, delete, subtasks | In review |
-| M5 | Editing, due dates, priority, filters | Planned |
+| M4 | Task list: add, complete, delete, subtasks | Done |
+| M5 | Editing, due dates, priority, filters | In review |
 | M6 | Live demo on GitHub Pages | Planned |
 | M7–M9 | AI features and polish | Planned |
 
