@@ -529,6 +529,115 @@ select {
   color: var(--warn-text);
 }
 
+/* ---------- Smart Add ---------- */
+
+.add-form--smart {
+  border: 2px solid var(--accent);
+}
+
+.button--ai {
+  border-color: var(--accent-border);
+  background: var(--accent-tint);
+  color: var(--accent-text);
+}
+
+.button--ai[aria-pressed='false'] {
+  border-color: var(--border);
+  background: var(--surface);
+  color: var(--muted-2);
+}
+
+.button--unavailable {
+  border-style: dashed;
+  border-color: var(--dashed);
+  background: var(--bg);
+  color: var(--muted);
+}
+
+.smart-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 8px -16px -16px;
+  padding: 16px;
+  border-top: 1px solid var(--accent-border);
+  border-radius: 0 0 var(--radius) var(--radius);
+  background: var(--accent-panel);
+}
+
+.smart-preview-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.smart-preview-header h2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: 15px;
+  color: var(--accent-text);
+}
+
+.smart-preview-note,
+.smart-preview-notes {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted-2);
+}
+
+.smart-preview-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.smart-preview-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.reading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted-2);
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid var(--accent-border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .smart-preview-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 @media (max-width: 600px) {
   .page {
     padding: 24px 16px;
