@@ -9,6 +9,7 @@ import Header from './components/Header.jsx'
 import ListFooter from './components/ListFooter.jsx'
 import StatusPill from './components/StatusPill.jsx'
 import TodoList from './components/TodoList.jsx'
+import { IS_DEMO } from './config.js'
 import { useTodos } from './hooks/useTodos.js'
 import { defaultStore } from './storage/index.js'
 import { countTasks, filterTasks, groupTasks } from './utils/tasks.js'
@@ -18,8 +19,9 @@ const EMPTY_FILTER_MESSAGES = {
   completed: 'No completed tasks yet.',
 }
 
-export default function App({ store = defaultStore }) {
-  const [aiStatus, setAiStatus] = useState('checking')
+export default function App({ store = defaultStore, demo = IS_DEMO }) {
+  // The demo has no backend, so AI is off without asking.
+  const [aiStatus, setAiStatus] = useState(demo ? 'off' : 'checking')
   const [filter, setFilter] = useState('all')
   const { todos, loading, error, dismissError, addTodo, updateTodo, deleteTodo, clearCompleted } =
     useTodos(store)
@@ -28,6 +30,7 @@ export default function App({ store = defaultStore }) {
   const counts = countTasks(topLevel)
 
   useEffect(() => {
+    if (demo) return
     let cancelled = false
     api
       .health()
@@ -36,7 +39,7 @@ export default function App({ store = defaultStore }) {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [demo])
 
   let content
   if (loading) {
