@@ -36,6 +36,15 @@ export function TrashIcon(props) {
   )
 }
 
+export function ChecklistIcon(props) {
+  return (
+    <Icon {...props}>
+      <rect x="4" y="3" width="16" height="18" rx="2" />
+      <path d="M8 8l1.5 1.5L12 7M8 13l1.5 1.5L12 12M14 8h2M14 13h2M8 17h8" />
+    </Icon>
+  )
+}
+
 export function SparkleIcon(props) {
   return (
     <Icon {...props}>
