@@ -754,6 +754,95 @@ select {
   }
 }
 
+/* ---------- Phone actions sheet (wireframe 5) ---------- */
+
+.todo-more {
+  display: none;
+  flex: none;
+}
+
+.modal-overlay--sheet {
+  align-items: flex-end;
+  padding: 0;
+}
+
+.sheet {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 8px 16px;
+  border-radius: 16px 16px 0 0;
+  background: var(--surface);
+  box-shadow: 0 -8px 24px rgb(0 0 0 / 0.12);
+}
+
+.sheet-title {
+  margin: 0;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.sheet-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: var(--target);
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font-size: 15px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sheet-item:hover {
+  background: var(--bg);
+}
+
+.sheet-item--ai {
+  background: var(--accent-tint);
+  color: var(--accent-text);
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .todo-actions {
+    display: none;
+  }
+
+  .todo-more {
+    display: inline-flex;
+  }
+
+  .add-form-row .button {
+    flex: 1 1 0;
+  }
+
+  .filter-tabs {
+    align-self: stretch;
+  }
+
+  .filter-tab {
+    flex: 1 1 0;
+    padding: 0 8px;
+  }
+
+  .edit-form-actions {
+    width: 100%;
+  }
+
+  .edit-form-actions .button {
+    flex: 1 1 0;
+  }
+}
+
 @media (max-width: 600px) {
   .page {
     padding: 24px 16px;
