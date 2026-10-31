@@ -72,7 +72,7 @@ export default function App({ store = defaultStore, demo = IS_DEMO }) {
       </Header>
       {aiStatus === 'off' && <AiOffBanner demo={demo} />}
       {error && <ErrorAlert message={error} onDismiss={dismissError} />}
-      <AddTodoForm onAdd={addTodo} />
+      <AddTodoForm onAdd={addTodo} aiStatus={aiStatus} />
       {!loading && topLevel.length > 0 && (
         <FilterTabs filter={filter} counts={counts} onChange={setFilter} />
       )}

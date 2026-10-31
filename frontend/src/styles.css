@@ -529,6 +529,12 @@ select {
   color: var(--warn-text);
 }
 
+.alert-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 /* ---------- Smart Add ---------- */
 
 .add-form--smart {
