@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react'
 
 import { api } from './api/client.js'
+import AddTodoForm from './components/AddTodoForm.jsx'
 import Header from './components/Header.jsx'
 import StatusPill from './components/StatusPill.jsx'
+import { useTodos } from './hooks/useTodos.js'
+import { defaultStore } from './storage/index.js'
 
-export default function App() {
+export default function App({ store = defaultStore }) {
   const [aiStatus, setAiStatus] = useState('checking')
+  const { addTodo } = useTodos(store)
 
   useEffect(() => {
     let cancelled = false
@@ -23,6 +27,7 @@ export default function App() {
       <Header>
         <StatusPill aiStatus={aiStatus} />
       </Header>
+      <AddTodoForm onAdd={addTodo} />
     </main>
   )
 }

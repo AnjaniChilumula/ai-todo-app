@@ -121,6 +121,97 @@ select {
   background: var(--grey);
 }
 
+/* ---------- Shared building blocks ---------- */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.field-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.input {
+  height: var(--target);
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font-size: 15px;
+}
+
+.input::placeholder {
+  color: var(--faint);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: var(--target);
+  padding: 0 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.button--primary {
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--surface);
+}
+
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--target);
+  height: var(--target);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--muted-2);
+  cursor: pointer;
+}
+
+.icon-button:hover {
+  background: var(--bg);
+}
+
+/* ---------- Add task form ---------- */
+
+.add-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+}
+
+.add-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.add-form-row .input {
+  flex: 1 1 280px;
+  min-width: 0;
+}
+
 @media (max-width: 600px) {
   .page {
     padding: 24px 16px;

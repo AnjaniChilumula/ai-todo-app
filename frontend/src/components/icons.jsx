@@ -18,6 +18,24 @@ function Icon({ size = 18, strokeWidth = 2, children }) {
   )
 }
 
+export function PlusIcon(props) {
+  return (
+    <Icon strokeWidth={2.5} {...props}>
+      <path d="M12 5v14M5 12h14" />
+    </Icon>
+  )
+}
+
+export function TrashIcon(props) {
+  return (
+    <Icon {...props}>
+      <path d="M3 6h18" />
+      <path d="M8 6V4h8v2" />
+      <path d="M19 6l-1 14H6L5 6" />
+    </Icon>
+  )
+}
+
 export function SparkleIcon(props) {
   return (
     <Icon {...props}>
