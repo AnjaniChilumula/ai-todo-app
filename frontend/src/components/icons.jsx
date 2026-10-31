@@ -36,6 +36,15 @@ export function TrashIcon(props) {
   )
 }
 
+export function CalendarIcon(props) {
+  return (
+    <Icon {...props}>
+      <rect x="3" y="5" width="18" height="16" rx="2" />
+      <path d="M16 3v4M8 3v4M3 10h18" />
+    </Icon>
+  )
+}
+
 export function ChecklistIcon(props) {
   return (
     <Icon {...props}>

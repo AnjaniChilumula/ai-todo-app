@@ -267,8 +267,59 @@ select {
   font-weight: 500;
 }
 
+.todo-details {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
 .todo-meta {
   font-size: 12px;
+  color: var(--muted-2);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 24px;
+  padding: 0 8px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.chip--due {
+  border-color: var(--border);
+  color: var(--muted-2);
+  font-weight: 400;
+}
+
+.chip--overdue {
+  border-color: var(--warn-border);
+  background: var(--warn-bg);
+  color: var(--warn-text);
+}
+
+.chip--high {
+  background: var(--text);
+  color: var(--surface);
+}
+
+.chip--medium {
+  background: var(--chip-medium);
+}
+
+.chip--low {
+  border-color: var(--border);
   color: var(--muted-2);
 }
 

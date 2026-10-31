@@ -1,7 +1,9 @@
 import { TrashIcon } from './icons.jsx'
+import TaskChips from './TaskChips.jsx'
 
 export default function TodoItem({ todo, subtasks = [], onToggle, onDelete, isSubtask = false }) {
   const doneSubtasks = subtasks.filter((sub) => sub.completed).length
+  const showDetails = !isSubtask && !todo.completed
 
   return (
     <li className={`todo ${isSubtask ? 'todo--subtask' : ''} ${todo.completed ? 'todo--done' : ''}`}>
@@ -17,10 +19,15 @@ export default function TodoItem({ todo, subtasks = [], onToggle, onDelete, isSu
         </span>
         <div className="todo-text">
           <span className="todo-title">{todo.title}</span>
-          {subtasks.length > 0 && (
-            <span className="todo-meta">
-              {doneSubtasks} of {subtasks.length} subtasks done
-            </span>
+          {(showDetails || subtasks.length > 0) && (
+            <div className="todo-details">
+              {showDetails && <TaskChips todo={todo} />}
+              {subtasks.length > 0 && (
+                <span className="todo-meta">
+                  {doneSubtasks} of {subtasks.length} subtasks done
+                </span>
+              )}
+            </div>
           )}
         </div>
         <button
