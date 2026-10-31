@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session, col, select
 
 from app.db import get_session
-from app.models import Todo, TodoCreate, TodoRead
+from app.models import Todo, TodoCreate, TodoRead, TodoUpdate, utcnow
 
 router = APIRouter(prefix="/api/todos", tags=["todos"])
 
@@ -43,3 +43,35 @@ def create_todo(data: TodoCreate, session: SessionDep) -> Todo:
     session.commit()
     session.refresh(todo)
     return todo
+
+
+def get_todo_or_404(session: Session, todo_id: int) -> Todo:
+    todo = session.get(Todo, todo_id)
+    if todo is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Task not found")
+    return todo
+
+
+@router.patch("/{todo_id}", response_model=TodoRead)
+def update_todo(todo_id: int, data: TodoUpdate, session: SessionDep) -> Todo:
+    """Change only the fields that were sent, e.g. {"completed": true}."""
+    todo = get_todo_or_404(session, todo_id)
+    changes = data.model_dump(exclude_unset=True)
+    if changes.get("title", "") is None:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, "Title cannot be empty")
+    todo.sqlmodel_update(changes)
+    todo.updated_at = utcnow()
+    session.add(todo)
+    session.commit()
+    session.refresh(todo)
+    return todo
+
+
+@router.delete("/{todo_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_todo(todo_id: int, session: SessionDep) -> None:
+    """Delete a task together with its subtasks."""
+    todo = get_todo_or_404(session, todo_id)
+    for subtask in session.exec(select(Todo).where(Todo.parent_id == todo_id)):
+        session.delete(subtask)
+    session.delete(todo)
+    session.commit()
