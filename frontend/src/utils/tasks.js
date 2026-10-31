@@ -11,3 +11,20 @@ export function groupTasks(todos) {
   }
   return { topLevel, subtasksByParent }
 }
+
+const MATCHES = {
+  all: () => true,
+  active: (todo) => !todo.completed,
+  completed: (todo) => todo.completed,
+}
+
+/** Filters top-level tasks by status; subtasks always stay with their parent. */
+export function filterTasks(topLevel, filter) {
+  return topLevel.filter(MATCHES[filter])
+}
+
+/** How many top-level tasks each filter shows. */
+export function countTasks(topLevel) {
+  const completed = topLevel.filter(MATCHES.completed).length
+  return { all: topLevel.length, active: topLevel.length - completed, completed }
+}
