@@ -1,7 +1,15 @@
 import TodoItem from './TodoItem.jsx'
 
 // Shows top-level tasks, each followed by its own subtasks.
-export default function TodoList({ todos, subtasksByParent, onToggle, onUpdate, onDelete }) {
+export default function TodoList({
+  todos,
+  subtasksByParent,
+  onToggle,
+  onUpdate,
+  onDelete,
+  onBreakdown,
+  aiReady,
+}) {
   return (
     <ul className="card todo-list" aria-label="Tasks">
       {todos.map((todo) => (
@@ -12,6 +20,8 @@ export default function TodoList({ todos, subtasksByParent, onToggle, onUpdate, 
           onToggle={onToggle}
           onUpdate={onUpdate}
           onDelete={onDelete}
+          onBreakdown={onBreakdown}
+          aiReady={aiReady}
         />
       ))}
     </ul>
