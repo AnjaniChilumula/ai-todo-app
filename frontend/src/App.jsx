@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { api } from './api/client.js'
 import AddTodoForm from './components/AddTodoForm.jsx'
+import AiOffBanner from './components/AiOffBanner.jsx'
 import EmptyState from './components/EmptyState.jsx'
 import ErrorAlert from './components/ErrorAlert.jsx'
 import FilterTabs from './components/FilterTabs.jsx'
@@ -69,6 +70,7 @@ export default function App({ store = defaultStore, demo = IS_DEMO }) {
       <Header>
         <StatusPill aiStatus={aiStatus} />
       </Header>
+      {aiStatus === 'off' && <AiOffBanner demo={demo} />}
       {error && <ErrorAlert message={error} onDismiss={dismissError} />}
       <AddTodoForm onAdd={addTodo} />
       {!loading && topLevel.length > 0 && (
