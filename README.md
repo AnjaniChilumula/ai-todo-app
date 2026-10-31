@@ -43,13 +43,30 @@ Tasks are stored in `backend/todos.db` (SQLite), created on first start.
 
 Dates are returned in UTC (ending in `Z`).
 
-### Checks
+## Run the frontend
+
+Requires Node.js 20+ (22 LTS recommended). Start the backend first, then in a second terminal:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open http://localhost:5173. Vite forwards `/api/...` requests to the backend on port 8000.
+
+## Checks
 
 ```bash
 cd backend
 ruff check .            # lint
 ruff format --check .   # formatting
 pytest                  # tests
+
+cd frontend
+npm run lint            # ESLint
+npm test                # Vitest
+npm run build           # production build
 ```
 
 The same checks run on every pull request (see `.github/workflows/ci.yml`).
@@ -60,8 +77,9 @@ The same checks run on every pull request (see `.github/workflows/ci.yml`).
 |---|---|---|
 | M0 | Plan and wireframes | Done |
 | M1 | Backend skeleton, settings, tests, CI | Done |
-| M2 | Todos API (SQLite, CRUD) | In review |
-| M3–M5 | React UI | Planned |
+| M2 | Todos API (SQLite, CRUD) | Done |
+| M3 | Frontend skeleton, tests, CI | In review |
+| M4–M5 | Todo list UI, editing and filters | Planned |
 | M6 | Live demo on GitHub Pages | Planned |
 | M7–M9 | AI features and polish | Planned |
 
