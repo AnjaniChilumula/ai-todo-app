@@ -1,6 +1,6 @@
 # AI Todo App — Project Plan
 
-**Author:** Claude (junior engineer) · **Reviewer:** Anjani Chilumula · **Status:** Approved, 31 Oct 2026
+**Author:** Anjani Chilumula · **Status:** Approved, 31 Oct 2026
 
 ## 1. Goal
 
@@ -141,8 +141,10 @@ Errors use FastAPI's standard `{"detail": ...}` shape. AI endpoints return `503`
 - **Repo:** `github.com/AnjaniChilumula/ai-todo-app` (public)
 - **Bootstrap:** one initial commit on `main` (README, .gitignore, LICENSE) so PRs have a base.
 - **Per milestone:** branch `mN-short-name` → 3–6 small commits → push → open a PR with *what / why / how to test /
-  screenshots* → you review → I address comments as **new commits** (no force-pushes) → you merge.
-- **Merge method:** "Create a merge commit", so every small commit stays in `main`'s history.
+  screenshots* → CI runs → the PR is merged once checks pass. Review comments are always addressed as
+  **new commits** (no force-pushes).
+- **Merge method:** "Create a merge commit" with a descriptive subject and body (never the default
+  "Merge pull request #N from ..."), so every small commit stays in `main`'s history.
 - **Commit style:** Conventional Commits — `feat:`, `fix:`, `test:`, `docs:`, `chore:`, `ci:`.
 - **Secrets:** `.env` is git-ignored from the first commit; only `.env.example` (no real values) is committed.
 
@@ -207,4 +209,5 @@ The live demo appears after M6 and is updated by every later merge.
 | AI model | Claude Opus 5.5, changeable through the `ANTHROPIC_MODEL` setting |
 | Merge method | "Create a merge commit", so every small commit stays in `main`'s history |
 | Repo visibility | Public |
-| Review flow | One PR per milestone; the next milestone starts after the previous PR is merged |
+| Review flow | One PR per milestone, merged automatically once CI passes; the next milestone starts after the merge |
+| Commit author | Anjani Chilumula |
