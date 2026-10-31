@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Literal, TypeVar
 
 import anthropic
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ValidationError
 
 # Server-side refusal fallback: if the model declines, the API retries on a fallback model
 # within the same call instead of failing.
@@ -129,6 +129,10 @@ class TodoAI:
             raise AIError(f"The AI service returned an error ({err.status_code}).") from err
         except anthropic.APIConnectionError as err:
             raise AIError("Couldn't reach the AI service. Check your internet connection.") from err
+        except ValidationError as err:
+            # parse() validates the answer itself, so a refused or cut-off answer that is not
+            # valid JSON for the schema fails here, before stop_reason can be checked.
+            raise AIError("The AI couldn't give a usable answer. Try rephrasing it.", 422) from err
 
         if response.stop_reason == "refusal":
             raise AIError("The AI couldn't help with that one. Try rephrasing it.", 422)
