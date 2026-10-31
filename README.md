@@ -28,6 +28,20 @@ uvicorn app.main:app --reload
 ```
 
 Then open http://localhost:8000/docs for the interactive API docs, or http://localhost:8000/api/health.
+Tasks are stored in `backend/todos.db` (SQLite), created on first start.
+
+### API
+
+| Method | Path | What it does |
+|---|---|---|
+| GET | `/api/health` | `{"status": "ok", "ai_enabled": false}` |
+| GET | `/api/todos?status=all\|active\|completed` | List tasks and subtasks |
+| POST | `/api/todos` | Create a task: `{"title": "Call mom", "due_at": "2026-11-01T18:00:00+05:30", "priority": "high"}`. Add `"parent_id"` for a subtask |
+| PATCH | `/api/todos/{id}` | Change some fields, e.g. `{"completed": true}` |
+| DELETE | `/api/todos/{id}` | Delete a task and its subtasks |
+| DELETE | `/api/todos?completed=true` | Clear completed tasks |
+
+Dates are returned in UTC (ending in `Z`).
 
 ### Checks
 
@@ -45,8 +59,9 @@ The same checks run on every pull request (see `.github/workflows/ci.yml`).
 | Milestone | What | Status |
 |---|---|---|
 | M0 | Plan and wireframes | Done |
-| M1 | Backend skeleton, settings, tests, CI | In review |
-| M2–M5 | Todos API, then the React UI | Planned |
+| M1 | Backend skeleton, settings, tests, CI | Done |
+| M2 | Todos API (SQLite, CRUD) | In review |
+| M3–M5 | React UI | Planned |
 | M6 | Live demo on GitHub Pages | Planned |
 | M7–M9 | AI features and polish | Planned |
 
