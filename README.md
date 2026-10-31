@@ -109,8 +109,9 @@ The same checks run on every pull request (see `.github/workflows/ci.yml`).
 | M4 | Task list: add, complete, delete, subtasks | Done |
 | M5 | Editing, due dates, priority, filters | Done |
 | M6 | Live demo on GitHub Pages | Done |
-| M7 | AI endpoints: Smart Add parsing, subtask suggestions | In review |
-| M8–M9 | AI in the UI, polish | Planned |
+| M7 | AI endpoints: Smart Add parsing, subtask suggestions | Done |
+| M8 | AI in the UI: Smart Add preview, Break it down dialog | In review |
+| M9 | Polish: accessibility, mobile, screenshots | Planned |
 
 ## License
 
