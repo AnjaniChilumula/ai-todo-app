@@ -37,4 +37,9 @@ export const api = {
   updateTodo: (id, changes) => request(`/api/todos/${id}`, { method: 'PATCH', body: changes }),
   deleteTodo: (id) => request(`/api/todos/${id}`, { method: 'DELETE' }),
   clearCompleted: () => request('/api/todos?completed=true', { method: 'DELETE' }),
+
+  // AI suggestions: nothing is saved until the user confirms.
+  parseTask: (text, timezone = Intl.DateTimeFormat().resolvedOptions().timeZone) =>
+    request('/api/ai/parse', { method: 'POST', body: { text, timezone } }),
+  breakdown: (todoId) => request('/api/ai/breakdown', { method: 'POST', body: { todo_id: todoId } }),
 }
