@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app import db
 from app.config import Settings, get_settings
-from app.routers import todos
+from app.routers import ai, todos
 
 SettingsDep = Annotated[Settings, Depends(get_settings)]
 
@@ -28,6 +28,7 @@ app.add_middleware(
 )
 
 app.include_router(todos.router)
+app.include_router(ai.router)
 
 
 @app.get("/api/health")
