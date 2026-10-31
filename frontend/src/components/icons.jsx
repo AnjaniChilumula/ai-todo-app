@@ -18,6 +18,33 @@ function Icon({ size = 18, strokeWidth = 2, children }) {
   )
 }
 
+export function PlusIcon(props) {
+  return (
+    <Icon strokeWidth={2.5} {...props}>
+      <path d="M12 5v14M5 12h14" />
+    </Icon>
+  )
+}
+
+export function TrashIcon(props) {
+  return (
+    <Icon {...props}>
+      <path d="M3 6h18" />
+      <path d="M8 6V4h8v2" />
+      <path d="M19 6l-1 14H6L5 6" />
+    </Icon>
+  )
+}
+
+export function ChecklistIcon(props) {
+  return (
+    <Icon {...props}>
+      <rect x="4" y="3" width="16" height="18" rx="2" />
+      <path d="M8 8l1.5 1.5L12 7M8 13l1.5 1.5L12 12M14 8h2M14 13h2M8 17h8" />
+    </Icon>
+  )
+}
+
 export function SparkleIcon(props) {
   return (
     <Icon {...props}>

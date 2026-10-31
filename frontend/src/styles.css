@@ -121,6 +121,231 @@ select {
   background: var(--grey);
 }
 
+/* ---------- Shared building blocks ---------- */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.field-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.input {
+  height: var(--target);
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font-size: 15px;
+}
+
+.input::placeholder {
+  color: var(--faint);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: var(--target);
+  padding: 0 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.button--primary {
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--surface);
+}
+
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--target);
+  height: var(--target);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--muted-2);
+  cursor: pointer;
+}
+
+.icon-button:hover {
+  background: var(--bg);
+}
+
+/* ---------- Add task form ---------- */
+
+.add-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+}
+
+.add-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.add-form-row .input {
+  flex: 1 1 280px;
+  min-width: 0;
+}
+
+/* ---------- Task list ---------- */
+
+.todo-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.todo {
+  padding: 6px 8px;
+}
+
+.todo-list > .todo + .todo {
+  border-top: 1px solid var(--divider);
+}
+
+.todo-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.check-target {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--target);
+  height: var(--target);
+}
+
+.checkbox {
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  accent-color: var(--text);
+  cursor: pointer;
+}
+
+.todo-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 11px;
+  overflow-wrap: anywhere;
+}
+
+.todo-title {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.todo-meta {
+  font-size: 12px;
+  color: var(--muted-2);
+}
+
+.todo--done > .todo-row .todo-title {
+  color: var(--faint);
+  font-weight: 400;
+  text-decoration: line-through;
+}
+
+.subtasks {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 44px;
+}
+
+.todo--subtask {
+  padding: 0;
+}
+
+.todo--subtask .todo-title {
+  font-size: 15px;
+  font-weight: 400;
+}
+
+/* ---------- Empty, loading and error states ---------- */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 56px 24px;
+  border-style: dashed;
+  border-color: var(--dashed);
+  color: var(--grey);
+  text-align: center;
+}
+
+.empty-state h2 {
+  margin: 0;
+  font-size: 20px;
+  color: var(--text);
+}
+
+.empty-state p {
+  max-width: 420px;
+  margin: 0;
+  font-size: 15px;
+  color: var(--muted-2);
+}
+
+.loading {
+  margin: 0;
+  padding: 24px;
+  color: var(--muted-2);
+  text-align: center;
+}
+
+.alert {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--warn-border);
+  border-radius: var(--radius-sm);
+  background: var(--warn-bg);
+  color: var(--warn-text);
+  font-size: 14px;
+}
+
+.button--warn {
+  border-color: var(--warn-border);
+  color: var(--warn-text);
+}
+
 @media (max-width: 600px) {
   .page {
     padding: 24px 16px;
