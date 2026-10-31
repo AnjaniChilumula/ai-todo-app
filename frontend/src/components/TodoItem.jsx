@@ -1,49 +1,89 @@
-import { TrashIcon } from './icons.jsx'
-import TaskChips from './TaskChips.jsx'
+import { useState } from 'react'
 
-export default function TodoItem({ todo, subtasks = [], onToggle, onDelete, isSubtask = false }) {
+import { PencilIcon, TrashIcon } from './icons.jsx'
+import TaskChips from './TaskChips.jsx'
+import TodoEditForm from './TodoEditForm.jsx'
+
+export default function TodoItem({
+  todo,
+  subtasks = [],
+  onToggle,
+  onUpdate,
+  onDelete,
+  isSubtask = false,
+}) {
+  const [editing, setEditing] = useState(false)
   const doneSubtasks = subtasks.filter((sub) => sub.completed).length
   const showDetails = !isSubtask && !todo.completed
 
   return (
-    <li className={`todo ${isSubtask ? 'todo--subtask' : ''} ${todo.completed ? 'todo--done' : ''}`}>
-      <div className="todo-row">
-        <span className="check-target">
-          <input
-            type="checkbox"
-            className="checkbox"
-            checked={todo.completed}
-            onChange={() => onToggle(todo)}
-            aria-label={todo.title}
-          />
-        </span>
-        <div className="todo-text">
-          <span className="todo-title">{todo.title}</span>
-          {(showDetails || subtasks.length > 0) && (
-            <div className="todo-details">
-              {showDetails && <TaskChips todo={todo} />}
-              {subtasks.length > 0 && (
-                <span className="todo-meta">
-                  {doneSubtasks} of {subtasks.length} subtasks done
-                </span>
-              )}
-            </div>
-          )}
+    <li
+      className={`todo ${isSubtask ? 'todo--subtask' : ''} ${todo.completed ? 'todo--done' : ''} ${editing ? 'todo--editing' : ''}`}
+    >
+      {editing ? (
+        <TodoEditForm
+          todo={todo}
+          onSave={(changes) => onUpdate(todo.id, changes)}
+          onCancel={() => setEditing(false)}
+        />
+      ) : (
+        <div className="todo-row">
+          <span className="check-target">
+            <input
+              type="checkbox"
+              className="checkbox"
+              checked={todo.completed}
+              onChange={() => onToggle(todo)}
+              aria-label={todo.title}
+            />
+          </span>
+          <div className="todo-text">
+            <span className="todo-title">{todo.title}</span>
+            {(showDetails || subtasks.length > 0) && (
+              <div className="todo-details">
+                {showDetails && <TaskChips todo={todo} />}
+                {subtasks.length > 0 && (
+                  <span className="todo-meta">
+                    {doneSubtasks} of {subtasks.length} subtasks done
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
+          <div className="todo-actions">
+            {!todo.completed && (
+              <button
+                type="button"
+                className="icon-button"
+                onClick={() => setEditing(true)}
+                aria-label={`Edit "${todo.title}"`}
+              >
+                <PencilIcon />
+              </button>
+            )}
+            <button
+              type="button"
+              className="icon-button"
+              onClick={() => onDelete(todo)}
+              aria-label={`Delete "${todo.title}"`}
+            >
+              <TrashIcon />
+            </button>
+          </div>
         </div>
-        <button
-          type="button"
-          className="icon-button"
-          onClick={() => onDelete(todo)}
-          aria-label={`Delete "${todo.title}"`}
-        >
-          <TrashIcon />
-        </button>
-      </div>
+      )}
 
       {subtasks.length > 0 && (
         <ul className="subtasks" aria-label={`Subtasks of ${todo.title}`}>
           {subtasks.map((sub) => (
-            <TodoItem key={sub.id} todo={sub} onToggle={onToggle} onDelete={onDelete} isSubtask />
+            <TodoItem
+              key={sub.id}
+              todo={sub}
+              onToggle={onToggle}
+              onUpdate={onUpdate}
+              onDelete={onDelete}
+              isSubtask
+            />
           ))}
         </ul>
       )}

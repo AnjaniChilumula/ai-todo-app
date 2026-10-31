@@ -9,10 +9,12 @@ import StatusPill from './components/StatusPill.jsx'
 import TodoList from './components/TodoList.jsx'
 import { useTodos } from './hooks/useTodos.js'
 import { defaultStore } from './storage/index.js'
+import { groupTasks } from './utils/tasks.js'
 
 export default function App({ store = defaultStore }) {
   const [aiStatus, setAiStatus] = useState('checking')
   const { todos, loading, error, dismissError, addTodo, updateTodo, deleteTodo } = useTodos(store)
+  const { topLevel, subtasksByParent } = groupTasks(todos)
 
   useEffect(() => {
     let cancelled = false
@@ -32,13 +34,15 @@ export default function App({ store = defaultStore }) {
         Loading tasks…
       </p>
     )
-  } else if (todos.length === 0) {
+  } else if (topLevel.length === 0) {
     content = <EmptyState />
   } else {
     content = (
       <TodoList
-        todos={todos}
+        todos={topLevel}
+        subtasksByParent={subtasksByParent}
         onToggle={(todo) => updateTodo(todo.id, { completed: !todo.completed })}
+        onUpdate={updateTodo}
         onDelete={(todo) => deleteTodo(todo.id)}
       />
     )

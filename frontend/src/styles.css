@@ -329,6 +329,41 @@ select {
   text-decoration: line-through;
 }
 
+.todo-actions {
+  flex: none;
+  display: flex;
+}
+
+.todo--editing {
+  padding: 16px;
+  background: var(--edit-bg);
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.edit-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.edit-form-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .subtasks {
   list-style: none;
   margin: 0;
