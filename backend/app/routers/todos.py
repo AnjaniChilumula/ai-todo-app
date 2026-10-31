@@ -45,6 +45,25 @@ def create_todo(data: TodoCreate, session: SessionDep) -> Todo:
     return todo
 
 
+@router.delete("")
+def clear_completed(session: SessionDep, completed: bool) -> dict:
+    """Delete every completed task (and the subtasks of completed tasks).
+
+    Called as DELETE /api/todos?completed=true. The explicit flag guards against wiping everything
+    by accident.
+    """
+    if not completed:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Only completed=true is supported")
+    done = list(session.exec(select(Todo).where(col(Todo.completed).is_(True))))
+    done_ids = {todo.id for todo in done}
+    orphans = session.exec(select(Todo).where(col(Todo.parent_id).in_(done_ids)))
+    deleted = {todo.id: todo for todo in [*done, *orphans]}
+    for todo in deleted.values():
+        session.delete(todo)
+    session.commit()
+    return {"deleted": len(deleted)}
+
+
 def get_todo_or_404(session: Session, todo_id: int) -> Todo:
     todo = session.get(Todo, todo_id)
     if todo is None:
