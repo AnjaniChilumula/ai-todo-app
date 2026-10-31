@@ -26,12 +26,30 @@ export function PlusIcon(props) {
   )
 }
 
+export function PencilIcon(props) {
+  return (
+    <Icon {...props}>
+      <path d="M12 20h9" />
+      <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" />
+    </Icon>
+  )
+}
+
 export function TrashIcon(props) {
   return (
     <Icon {...props}>
       <path d="M3 6h18" />
       <path d="M8 6V4h8v2" />
       <path d="M19 6l-1 14H6L5 6" />
+    </Icon>
+  )
+}
+
+export function CalendarIcon(props) {
+  return (
+    <Icon {...props}>
+      <rect x="3" y="5" width="18" height="16" rx="2" />
+      <path d="M16 3v4M8 3v4M3 10h18" />
     </Icon>
   )
 }

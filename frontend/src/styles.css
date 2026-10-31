@@ -212,6 +212,41 @@ select {
   min-width: 0;
 }
 
+/* ---------- Filters ---------- */
+
+.filter-tabs {
+  display: inline-flex;
+  align-self: flex-start;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 10px;
+  background: var(--track);
+}
+
+.filter-tab {
+  min-height: var(--target);
+  padding: 0 16px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--muted-2);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.filter-tab[aria-pressed='true'] {
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.filter-empty {
+  margin: 0;
+  padding: 24px;
+  color: var(--muted-2);
+  text-align: center;
+}
+
 /* ---------- Task list ---------- */
 
 .todo-list {
@@ -267,8 +302,59 @@ select {
   font-weight: 500;
 }
 
+.todo-details {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
 .todo-meta {
   font-size: 12px;
+  color: var(--muted-2);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 24px;
+  padding: 0 8px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.chip--due {
+  border-color: var(--border);
+  color: var(--muted-2);
+  font-weight: 400;
+}
+
+.chip--overdue {
+  border-color: var(--warn-border);
+  background: var(--warn-bg);
+  color: var(--warn-text);
+}
+
+.chip--high {
+  background: var(--text);
+  color: var(--surface);
+}
+
+.chip--medium {
+  background: var(--chip-medium);
+}
+
+.chip--low {
+  border-color: var(--border);
   color: var(--muted-2);
 }
 
@@ -276,6 +362,41 @@ select {
   color: var(--faint);
   font-weight: 400;
   text-decoration: line-through;
+}
+
+.todo-actions {
+  flex: none;
+  display: flex;
+}
+
+.todo--editing {
+  padding: 16px;
+  background: var(--edit-bg);
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.edit-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.edit-form-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .subtasks {
@@ -291,6 +412,16 @@ select {
 .todo--subtask .todo-title {
   font-size: 15px;
   font-weight: 400;
+}
+
+.list-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--muted-2);
 }
 
 /* ---------- Empty, loading and error states ---------- */
