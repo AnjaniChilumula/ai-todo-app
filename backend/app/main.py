@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app import db
 from app.config import Settings, get_settings
+from app.routers import todos
 
 SettingsDep = Annotated[Settings, Depends(get_settings)]
 
@@ -25,6 +26,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(todos.router)
 
 
 @app.get("/api/health")
