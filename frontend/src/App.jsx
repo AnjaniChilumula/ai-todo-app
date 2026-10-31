@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { api } from './api/client.js'
 import AddTodoForm from './components/AddTodoForm.jsx'
@@ -26,6 +26,7 @@ export default function App({ store = defaultStore, demo = IS_DEMO }) {
   const [aiStatus, setAiStatus] = useState(demo ? 'off' : 'checking')
   const [filter, setFilter] = useState('all')
   const [breakdownTodo, setBreakdownTodo] = useState(null)
+  const breakdownOpener = useRef(null)
   const { todos, loading, error, dismissError, addTodo, updateTodo, deleteTodo, clearCompleted } =
     useTodos(store)
   const { topLevel, subtasksByParent } = groupTasks(todos)
@@ -43,6 +44,17 @@ export default function App({ store = defaultStore, demo = IS_DEMO }) {
       cancelled = true
     }
   }, [demo])
+
+  // Remember which button opened the dialog so keyboard focus can go back to it.
+  function openBreakdown(todo) {
+    breakdownOpener.current = document.activeElement
+    setBreakdownTodo(todo)
+  }
+
+  function closeBreakdown() {
+    setBreakdownTodo(null)
+    breakdownOpener.current?.focus()
+  }
 
   // Adds the chosen suggestions one by one; stops at the first failure.
   async function addSubtasks(parent, titles) {
@@ -71,7 +83,7 @@ export default function App({ store = defaultStore, demo = IS_DEMO }) {
         onToggle={(todo) => updateTodo(todo.id, { completed: !todo.completed })}
         onUpdate={updateTodo}
         onDelete={(todo) => deleteTodo(todo.id)}
-        onBreakdown={setBreakdownTodo}
+        onBreakdown={openBreakdown}
         aiReady={aiStatus === 'on'}
       />
     )
@@ -101,7 +113,7 @@ export default function App({ store = defaultStore, demo = IS_DEMO }) {
           todo={breakdownTodo}
           existingSubtasks={subtasksByParent.get(breakdownTodo.id) ?? []}
           onAdd={(titles) => addSubtasks(breakdownTodo, titles)}
-          onClose={() => setBreakdownTodo(null)}
+          onClose={closeBreakdown}
         />
       )}
     </main>

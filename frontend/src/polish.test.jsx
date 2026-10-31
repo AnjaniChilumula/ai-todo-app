@@ -61,6 +61,19 @@ describe('keyboard focus', () => {
     vi.spyOn(api, 'health').mockResolvedValue({ status: 'ok', ai_enabled: false })
   })
 
+  it('returns focus to the sparkle button when Break it down closes', async () => {
+    api.health.mockResolvedValue({ status: 'ok', ai_enabled: true })
+    vi.spyOn(api, 'breakdown').mockResolvedValue({ subtasks: [] })
+    const user = renderApp([{ title: 'Plan party' }])
+    const opener = await screen.findByRole('button', { name: 'Break down "Plan party" with AI' })
+
+    await user.click(opener)
+    await screen.findByRole('dialog', { name: 'Break down “Plan party”' })
+    await user.keyboard('{Escape}')
+
+    expect(opener).toHaveFocus()
+  })
+
   it('returns focus to the Edit button when editing ends', async () => {
     const user = renderApp([{ title: 'Call the bank' }])
 
