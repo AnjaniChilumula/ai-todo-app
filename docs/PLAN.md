@@ -1,6 +1,6 @@
 # AI Todo App — Project Plan
 
-**Author:** Claude (junior engineer) · **Reviewer:** Anjani Chilumula · **Status:** Draft, awaiting review
+**Author:** Claude (junior engineer) · **Reviewer:** Anjani Chilumula · **Status:** Approved, 31 Oct 2026
 
 ## 1. Goal
 
@@ -198,8 +198,13 @@ The live demo appears after M6 and is updated by every later merge.
 | Project is inside OneDrive | ⚠️ `Documents` syncs to OneDrive | `node_modules/` and `.venv/` hold thousands of files; consider pausing sync for this folder or moving it out of OneDrive |
 | Public repo | ⚠️ anyone can read it | `.env` git-ignored from commit 1; tests never need a real key |
 
-## 11. Open questions for the reviewer
+## 12. Review decisions
 
-1. Is **JavaScript** OK for the React side, or do you want **TypeScript** from the start?
-2. Keep **Claude Opus 5.5** for the AI features, or use the cheaper **Claude Haiku 5.5**?
-3. Is **"Create a merge commit"** the merge method you'll use, so the small commits stay visible?
+| Question | Decision |
+|---|---|
+| Live site | GitHub Pages in demo mode (browser storage, AI off) |
+| React language | JavaScript (TypeScript can be added later) |
+| AI model | Claude Opus 5.5, changeable through the `ANTHROPIC_MODEL` setting |
+| Merge method | "Create a merge commit", so every small commit stays in `main`'s history |
+| Repo visibility | Public |
+| Review flow | One PR per milestone; the next milestone starts after the previous PR is merged |
