@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { api } from './api/client.js'
 import AddTodoForm from './components/AddTodoForm.jsx'
 import AiOffBanner from './components/AiOffBanner.jsx'
+import BreakdownDialog from './components/BreakdownDialog.jsx'
 import EmptyState from './components/EmptyState.jsx'
 import ErrorAlert from './components/ErrorAlert.jsx'
 import FilterTabs from './components/FilterTabs.jsx'
@@ -24,6 +25,7 @@ export default function App({ store = defaultStore, demo = IS_DEMO }) {
   // The demo has no backend, so AI is off without asking.
   const [aiStatus, setAiStatus] = useState(demo ? 'off' : 'checking')
   const [filter, setFilter] = useState('all')
+  const [breakdownTodo, setBreakdownTodo] = useState(null)
   const { todos, loading, error, dismissError, addTodo, updateTodo, deleteTodo, clearCompleted } =
     useTodos(store)
   const { topLevel, subtasksByParent } = groupTasks(todos)
@@ -41,6 +43,14 @@ export default function App({ store = defaultStore, demo = IS_DEMO }) {
       cancelled = true
     }
   }, [demo])
+
+  // Adds the chosen suggestions one by one; stops at the first failure.
+  async function addSubtasks(parent, titles) {
+    for (const title of titles) {
+      if (!(await addTodo({ title, parent_id: parent.id }))) return false
+    }
+    return true
+  }
 
   let content
   if (loading) {
@@ -61,6 +71,8 @@ export default function App({ store = defaultStore, demo = IS_DEMO }) {
         onToggle={(todo) => updateTodo(todo.id, { completed: !todo.completed })}
         onUpdate={updateTodo}
         onDelete={(todo) => deleteTodo(todo.id)}
+        onBreakdown={setBreakdownTodo}
+        aiReady={aiStatus === 'on'}
       />
     )
   }
@@ -82,6 +94,14 @@ export default function App({ store = defaultStore, demo = IS_DEMO }) {
           remaining={counts.active}
           completed={todos.filter((todo) => todo.completed).length}
           onClearCompleted={clearCompleted}
+        />
+      )}
+      {breakdownTodo && (
+        <BreakdownDialog
+          todo={breakdownTodo}
+          existingSubtasks={subtasksByParent.get(breakdownTodo.id) ?? []}
+          onAdd={(titles) => addSubtasks(breakdownTodo, titles)}
+          onClose={() => setBreakdownTodo(null)}
         />
       )}
     </main>

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { PencilIcon, TrashIcon } from './icons.jsx'
+import { PencilIcon, SparkleIcon, TrashIcon } from './icons.jsx'
 import TaskChips from './TaskChips.jsx'
 import TodoEditForm from './TodoEditForm.jsx'
 
@@ -10,6 +10,8 @@ export default function TodoItem({
   onToggle,
   onUpdate,
   onDelete,
+  onBreakdown,
+  aiReady = false,
   isSubtask = false,
 }) {
   const [editing, setEditing] = useState(false)
@@ -51,6 +53,16 @@ export default function TodoItem({
             )}
           </div>
           <div className="todo-actions">
+            {aiReady && !isSubtask && !todo.completed && (
+              <button
+                type="button"
+                className="icon-button icon-button--ai"
+                onClick={() => onBreakdown(todo)}
+                aria-label={`Break down "${todo.title}" with AI`}
+              >
+                <SparkleIcon />
+              </button>
+            )}
             {!todo.completed && (
               <button
                 type="button"
