@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app import db
 from app.auth.csrf import add_origin_check
 from app.config import SettingsDep, get_settings
-from app.routers import account, ai, auth, todos
+from app.routers import account, admin, ai, auth, todos
 
 
 @asynccontextmanager
@@ -29,6 +29,7 @@ add_origin_check(app, get_settings().cors_origins)
 
 app.include_router(auth.router)
 app.include_router(account.router)
+app.include_router(admin.router)
 app.include_router(todos.router)
 app.include_router(ai.router)
 
