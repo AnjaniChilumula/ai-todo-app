@@ -1,6 +1,6 @@
 # AI Todo App v2 — Accounts, Sessions, Authorization and UI
 
-**Author:** Anjani Chilumula · **Status:** Draft, awaiting review · **Builds on:** [v1 plan](PLAN.md) (M0–M9, done)
+**Author:** Anjani Chilumula · **Status:** Approved, 4 Nov 2026 · **Builds on:** [v1 plan](PLAN.md) (M0–M9, done)
 
 ## 1. Goal
 
@@ -183,8 +183,14 @@ and a descriptive message once checks pass.
 | Node.js 20.3 | Still works (Vite 6); Node 22 LTS recommended |
 | Figma quota | View seat ≈ 20 calls/month; v2 wireframes use about 5 |
 
-## 10. Open questions for the reviewer
+## 10. Review decisions
 
-1. Is **14 days idle / 30 days maximum** right for how long sign-in lasts?
-2. Should a brand-new account start **empty**, or with a couple of example tasks ("Try Smart Add")?
-3. **Undo window of 8 seconds** OK?
+| Question | Decision |
+|---|---|
+| Sign-in methods | Email + password, plus Google |
+| Sessions | Server-side, HttpOnly cookie |
+| Authorization | Own tasks only, plus an admin role |
+| UI improvements | Dark mode, search & sort, undo toasts, date groups |
+| How long sign-in lasts | 14 days idle, 30 days maximum (plan default) |
+| New accounts | Start empty (plan default) |
+| Undo window | 8 seconds (plan default) |
