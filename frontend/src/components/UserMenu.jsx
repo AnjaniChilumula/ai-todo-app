@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router'
 
 import { useAuth } from '../auth/context.js'
-import { ChevronDownIcon, SignOutIcon } from './icons.jsx'
+import { ChevronDownIcon, ShieldIcon, SignOutIcon, SlidersIcon } from './icons.jsx'
 
 function initials(name) {
   const letters = name
@@ -62,6 +63,21 @@ export default function UserMenu() {
             {user.email && <span>{user.email}</span>}
           </div>
           <div className="user-menu-divider" />
+          {!demo && (
+            <>
+              <Link to="/settings" className="user-menu-item" onClick={() => setOpen(false)}>
+                <SlidersIcon size={18} />
+                Settings
+              </Link>
+              {user.role === 'admin' && (
+                <Link to="/admin" className="user-menu-item" onClick={() => setOpen(false)}>
+                  <ShieldIcon size={18} />
+                  Admin
+                </Link>
+              )}
+              <div className="user-menu-divider" />
+            </>
+          )}
           {demo ? (
             <p className="user-menu-note">Demo: no accounts. Tasks stay in this browser.</p>
           ) : (

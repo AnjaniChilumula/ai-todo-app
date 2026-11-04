@@ -22,6 +22,23 @@ export function formatDue(iso, now = new Date()) {
   return hasTime ? `${day}, ${time}` : day
 }
 
+/** "Active now", "5 minutes ago", "2 days ago": for when sessions and accounts were last used. */
+export function formatRelative(iso, now = new Date()) {
+  const seconds = Math.round((now - new Date(iso)) / 1000)
+  if (seconds < 120) return 'just now'
+  const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: 'auto' })
+  const steps = [
+    ['minute', 60],
+    ['hour', 60 * 60],
+    ['day', 60 * 60 * 24],
+    ['month', 60 * 60 * 24 * 30],
+    ['year', 60 * 60 * 24 * 365],
+  ]
+  let [unit, size] = steps[0]
+  for (const step of steps) if (seconds >= step[1]) [unit, size] = step
+  return rtf.format(-Math.floor(seconds / size), unit)
+}
+
 export function isOverdue(iso, now = new Date()) {
   return new Date(iso) < now
 }
