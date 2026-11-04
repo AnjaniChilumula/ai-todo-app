@@ -141,6 +141,12 @@ backend uses a fake AI plus the real SDK against a mock HTTP transport, and the 
 
 See [docs/PLAN.md](docs/PLAN.md) for the plan and [docs/wireframes](docs/wireframes/README.md) for the designs.
 
+### Next: v2
+
+Accounts (email + password and Google), server-side sessions, per-user tasks with an admin role, and UI work: dark
+mode, search and sort, undo, and date groups. See the [v2 plan](docs/PLAN-v2.md) and
+[v2 wireframes](docs/wireframes/v2/README.md) (milestones M10–M20).
+
 ## License
 
 [MIT](LICENSE)
