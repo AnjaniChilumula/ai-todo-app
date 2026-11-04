@@ -3,11 +3,12 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.sessions import SessionMiddleware
 
 from app import db
 from app.auth.csrf import add_origin_check
 from app.config import SettingsDep, get_settings
-from app.routers import account, admin, ai, auth, todos
+from app.routers import account, admin, ai, auth, google_auth, todos
 
 
 @asynccontextmanager
@@ -26,8 +27,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 add_origin_check(app, get_settings().cors_origins)
+# Only for Google sign-in: a signed, 10-minute cookie that carries the OAuth state, nonce and PKCE
+# verifier from /api/auth/google/start to the callback. Sign-in sessions don't use it.
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=get_settings().secret_key,
+    session_cookie="oauth_state",
+    max_age=600,
+    same_site="lax",
+    https_only=get_settings().cookie_secure,
+)
 
 app.include_router(auth.router)
+app.include_router(google_auth.router)
 app.include_router(account.router)
 app.include_router(admin.router)
 app.include_router(todos.router)
