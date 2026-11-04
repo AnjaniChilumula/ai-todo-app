@@ -14,6 +14,9 @@ class Settings(BaseSettings):
     # Origins allowed to call the API from a browser (the Vite dev server by default).
     cors_origins: list[str] = ["http://localhost:5173"]
 
+    # Mark the session cookie Secure (HTTPS only). Leave off for http://localhost development.
+    cookie_secure: bool = False
+
     # AI features are switched on only when a key is present.
     anthropic_api_key: str | None = None
     anthropic_model: str = "claude-opus-5-5"
