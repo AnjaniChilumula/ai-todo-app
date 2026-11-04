@@ -122,6 +122,9 @@ Dates are returned in UTC (ending in `Z`). AI endpoints return `503` with setup 
 | POST | `/api/auth/login` | `{"email", "password"}`: signs in |
 | POST | `/api/auth/logout` | Signs this browser out |
 | GET | `/api/auth/me` | The signed-in user, or `401` |
+| GET | `/api/auth/config` | Which sign-in methods are on: `{"password": true, "google": false}` |
+| GET | `/api/auth/google/start` | Redirects to Google (when configured) |
+| GET | `/api/auth/google/callback` | Google sends the browser back here; signs in and redirects to the app |
 | PATCH | `/api/account` | `{"name"}`: rename yourself |
 | POST | `/api/account/password` | `{"current_password", "new_password"}`: signs out your other devices |
 | GET | `/api/account/sessions` | Devices you're signed in on ("Chrome on Windows"), this one marked `current` |
@@ -138,6 +141,19 @@ How sign-in is protected:
   answer as a wrong password
 - **Cross-site requests**: any `POST`/`PATCH`/`DELETE` from another website's origin is refused (`403`)
 - Set `COOKIE_SECURE=true` in `backend/.env` when the app is served over HTTPS
+
+### Sign in with Google (optional)
+
+1. In [Google Cloud Console](https://console.cloud.google.com/apis/credentials), create an **OAuth client ID** of
+   type **Web application**.
+2. Add the **authorized redirect URI** `http://localhost:5173/api/auth/google/callback`. It goes through the Vite
+   proxy, so the session cookie is set for the app's own address.
+3. Put the client id and secret in `backend/.env` as `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`, and set
+   `SECRET_KEY` to a long random string. Restart the backend.
+
+`GET /api/auth/config` then reports `"google": true` and the sign-in page shows the Google button. Signing in with
+Google using the email of an existing account links the two (Google must confirm the email is verified). Accounts
+created through Google have no password until you set one in Settings.
 
 Every task belongs to the account that created it. All `/api/todos` and `/api/ai/*` endpoints need a session
 (`401` without one), and another user's task id answers `404` exactly like a missing one.
