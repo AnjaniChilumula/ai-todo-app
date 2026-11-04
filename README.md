@@ -114,6 +114,24 @@ in the expected fields. The AI only *suggests*: nothing is saved until you confi
 
 Dates are returned in UTC (ending in `Z`). AI endpoints return `503` with setup steps when no key is set.
 
+### Accounts (v2, in progress)
+
+| Method | Path | What it does |
+|---|---|---|
+| POST | `/api/auth/signup` | `{"name", "email", "password"}`: creates the account and signs in |
+| POST | `/api/auth/login` | `{"email", "password"}`: signs in |
+| POST | `/api/auth/logout` | Signs this browser out |
+| GET | `/api/auth/me` | The signed-in user, or `401` |
+
+How sign-in is protected:
+- **Passwords** are hashed with Argon2 and never stored or returned
+- **Sessions** are server-side: the browser holds a random token in an `HttpOnly`, `SameSite=Lax` cookie, and the
+  database keeps only its SHA-256 hash. They end after 14 idle days, or 30 days at most.
+- **Guessing** is slowed down: 5 wrong passwords for an email lock it for 15 minutes, and a wrong email gets the same
+  answer as a wrong password
+- **Cross-site requests**: any `POST`/`PATCH`/`DELETE` from another website's origin is refused (`403`)
+- Set `COOKIE_SECURE=true` in `backend/.env` when the app is served over HTTPS
+
 ## Run the frontend
 
 Requires Node.js 20+ (22 LTS recommended). With the backend running, in a second terminal:
