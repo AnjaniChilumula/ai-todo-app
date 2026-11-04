@@ -1,3 +1,5 @@
+import math
+
 from fastapi import APIRouter, HTTPException, Request, Response, status
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, select
@@ -5,6 +7,7 @@ from sqlmodel import Session, select
 from app.auth import sessions
 from app.auth.deps import CurrentUser, SessionDep
 from app.auth.passwords import hash_password, password_problem, verify_password
+from app.auth.ratelimit import login_limiter
 from app.config import Settings, SettingsDep
 from app.models import LoginRequest, SignupRequest, User, UserRead, utcnow
 
@@ -54,10 +57,21 @@ def login(
     data: LoginRequest, request: Request, response: Response, db: SessionDep, settings: SettingsDep
 ) -> UserRead:
     """Sign in with email and password. A wrong email and a wrong password get the same answer."""
+    key = (data.email, request.client.host if request.client else "unknown")
+    if wait := login_limiter.retry_after(key):
+        minutes = math.ceil(wait / 60)
+        raise HTTPException(
+            status.HTTP_429_TOO_MANY_REQUESTS,
+            f"Too many attempts. Try again in {minutes} minute{'s' if minutes != 1 else ''}.",
+            headers={"Retry-After": str(wait)},
+        )
+
     user = db.exec(select(User).where(User.email == data.email)).first()
     ok, new_hash = verify_password(data.password, user.password_hash if user else None)
     if not ok:
+        login_limiter.record_failure(key)
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, WRONG_CREDENTIALS)
+    login_limiter.reset(key)
     if not user.is_active:
         raise HTTPException(status.HTTP_403_FORBIDDEN, "This account has been disabled.")
     if new_hash:
