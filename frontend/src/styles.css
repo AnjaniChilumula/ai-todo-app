@@ -144,6 +144,130 @@ select {
   color: var(--accent-text);
 }
 
+/* ---------- Top bar and user menu ---------- */
+
+.top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--divider);
+  background: var(--surface);
+}
+
+.top-bar-home {
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+}
+
+.top-bar-end {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.user-menu {
+  position: relative;
+}
+
+.avatar-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--target);
+  padding: 4px 8px 4px 4px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted-2);
+  cursor: pointer;
+}
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.user-menu-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 10;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: 0 10px 28px rgb(0 0 0 / 0.14);
+}
+
+.user-menu-who {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.user-menu-who span {
+  font-size: 13px;
+  color: var(--muted-2);
+}
+
+.user-menu-divider {
+  height: 1px;
+  margin: 4px 0;
+  background: var(--divider);
+}
+
+.user-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.user-menu-item:hover {
+  background: var(--bg);
+}
+
+.user-menu-note {
+  margin: 0;
+  padding: 8px 10px;
+  font-size: 13px;
+  color: var(--muted-2);
+}
+
+@media (max-width: 600px) {
+  .top-bar {
+    padding: 8px 16px;
+  }
+}
+
 /* ---------- Sign in / create account ---------- */
 
 .auth-page {
