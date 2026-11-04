@@ -43,6 +43,15 @@ export function RefreshIcon(props) {
   )
 }
 
+export function EyeIcon(props) {
+  return (
+    <Icon {...props}>
+      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" />
+      <circle cx="12" cy="12" r="3" />
+    </Icon>
+  )
+}
+
 export function InfoIcon(props) {
   return (
     <Icon {...props}>
@@ -86,6 +95,24 @@ export function CalendarIcon(props) {
     <Icon {...props}>
       <rect x="3" y="5" width="18" height="16" rx="2" />
       <path d="M16 3v4M8 3v4M3 10h18" />
+    </Icon>
+  )
+}
+
+export function ChevronDownIcon(props) {
+  return (
+    <Icon {...props}>
+      <path d="M6 9l6 6 6-6" />
+    </Icon>
+  )
+}
+
+export function SignOutIcon(props) {
+  return (
+    <Icon {...props}>
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+      <path d="M16 17l5-5-5-5" />
+      <path d="M21 12H9" />
     </Icon>
   )
 }

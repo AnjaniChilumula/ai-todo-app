@@ -3,16 +3,16 @@ import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { api } from './api/client.js'
-import App from './App.jsx'
+import TasksPage from './pages/TasksPage.jsx'
 import { createMemoryStore } from './test/memoryStore.js'
 
 function renderApp(initialTodos = []) {
   const store = createMemoryStore(initialTodos)
-  render(<App store={store} />)
+  render(<TasksPage store={store} />)
   return { store, user: userEvent.setup() }
 }
 
-describe('App', () => {
+describe('TasksPage', () => {
   beforeEach(() => {
     vi.spyOn(api, 'health').mockResolvedValue({ status: 'ok', ai_enabled: false })
   })

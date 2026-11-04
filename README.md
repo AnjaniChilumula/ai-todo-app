@@ -185,6 +185,26 @@ npm install
 npm run dev              # http://localhost:5173
 ```
 
+Vite forwards `/api/...` to the backend on port 8000, so the browser only ever talks to one address and the session
+cookie just works.
+
+**First run with accounts (v2):**
+
+1. You'll land on the sign-in page. Choose **Create an account** (or **Continue with Google** if you set it up).
+2. Moving from v1? Bring your old tasks into the new account (from `backend/`):
+
+   ```bash
+   python -m app.cli claim-tasks you@example.com
+   ```
+
+3. Make yourself the admin:
+
+   ```bash
+   python -m app.cli make-admin you@example.com
+   ```
+
+Pages: `/login`, `/signup`, and `/` (your tasks, signed in only). The top bar's avatar menu has **Sign out**.
+
 `npm run preview:demo` builds and serves the GitHub Pages demo locally at http://localhost:4173/ai-todo-app/.
 
 ## Checks

@@ -3,11 +3,11 @@ import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { ApiError, api } from './api/client.js'
-import App from './App.jsx'
+import TasksPage from './pages/TasksPage.jsx'
 import { createMemoryStore } from './test/memoryStore.js'
 
 function renderApp(initialTodos = []) {
-  render(<App store={createMemoryStore(initialTodos)} />)
+  render(<TasksPage store={createMemoryStore(initialTodos)} />)
   return userEvent.setup()
 }
 
