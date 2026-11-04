@@ -51,6 +51,9 @@ class Todo(TodoBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     completed: bool = False
     parent_id: int | None = Field(default=None, foreign_key="todo.id", index=True)
+    # Who the task belongs to. Null only for tasks created before accounts existed (v1); those
+    # are invisible until `python -m app.cli claim-tasks <email>` gives them an owner.
+    owner_id: int | None = Field(default=None, foreign_key="users.id", index=True)
     created_at: datetime = Field(default_factory=utcnow)
     updated_at: datetime = Field(default_factory=utcnow)
 
