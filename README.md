@@ -203,7 +203,16 @@ cookie just works.
    python -m app.cli make-admin you@example.com
    ```
 
-Pages: `/login`, `/signup`, and `/` (your tasks, signed in only). The top bar's avatar menu has **Sign out**.
+Pages:
+
+| Page | Who | What |
+|---|---|---|
+| `/login`, `/signup` | Signed out | Sign in or create an account (signed-in people are sent to `/`) |
+| `/` | Signed in | Your tasks |
+| `/settings` | Signed in | Change your name, change your password (or set a first one if you joined with Google), and see where you're signed in, with **Sign out** per device or **Sign out everywhere else** |
+| `/admin` | Admins | Every account with its role, status, task count (never task contents) and last activity. **Make admin** / **Remove admin** and **Disable** / **Enable** work on other accounts, not your own. Disabling signs that account out everywhere. |
+
+The top bar's avatar menu links to Settings (and Admin, for admins) and has **Sign out**.
 
 `npm run preview:demo` builds and serves the GitHub Pages demo locally at http://localhost:4173/ai-todo-app/.
 
