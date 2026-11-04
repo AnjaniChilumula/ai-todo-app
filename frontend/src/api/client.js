@@ -52,6 +52,18 @@ export const api = {
   signIn: (data) => request('/api/auth/login', { method: 'POST', body: data, quiet401: true }),
   signOut: () => request('/api/auth/logout', { method: 'POST' }),
 
+  // Your account
+  updateAccount: (changes) => request('/api/account', { method: 'PATCH', body: changes }),
+  changePassword: (data) => request('/api/account/password', { method: 'POST', body: data }),
+  listSessions: () => request('/api/account/sessions'),
+  endSession: (id) => request(`/api/account/sessions/${id}`, { method: 'DELETE' }),
+  endOtherSessions: () => request('/api/account/sessions?others=true', { method: 'DELETE' }),
+
+  // Admin only
+  adminUsers: () => request('/api/admin/users'),
+  adminUpdateUser: (id, changes) =>
+    request(`/api/admin/users/${id}`, { method: 'PATCH', body: changes }),
+
   // Tasks
   listTodos: () => request('/api/todos'),
   createTodo: (data) => request('/api/todos', { method: 'POST', body: data }),
