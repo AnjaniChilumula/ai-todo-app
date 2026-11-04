@@ -75,6 +75,21 @@ uvicorn app.main:app --reload
 
 Open http://localhost:8000/docs for the interactive API docs. Tasks are stored in `backend/todos.db`.
 
+### Database migrations
+
+The schema is managed by [Alembic](https://alembic.sqlalchemy.org/) (`backend/migrations/`). The backend upgrades
+the database automatically when it starts, so there is nothing to run by hand. A database from v1 is recognised and
+upgraded in place, keeping your tasks.
+
+When you change a model in `app/models.py`, create a migration for it (from `backend/`):
+
+```bash
+alembic revision --autogenerate -m "describe the change"
+```
+
+Review the generated file in `migrations/versions/`, then restart the backend (or run `alembic upgrade head`). A test
+fails if a model and the migrations ever disagree.
+
 ### Turn on the AI features
 
 1. Create an API key at https://console.anthropic.com/ (API usage is billed by Anthropic).
