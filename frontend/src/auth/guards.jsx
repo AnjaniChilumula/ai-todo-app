@@ -26,10 +26,12 @@ export function RequireAdmin() {
   return <Outlet />
 }
 
-/** Sign-in and sign-up pages: pointless when already signed in, or in the demo. */
+/** Sign-in and sign-up pages: pointless when already signed in, or in the demo. Once someone
+ *  signs in here, this sends them on to the page they were trying to open. */
 export function SignedOutOnly() {
   const { user, demo } = useAuth()
+  const location = useLocation()
   if (user === undefined) return <Checking />
-  if (user || demo) return <Navigate to="/" replace />
+  if (user || demo) return <Navigate to={location.state?.from ?? '/'} replace />
   return <Outlet />
 }
