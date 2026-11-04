@@ -9,8 +9,16 @@ import pytest
 from app.ai.client import FALLBACK_BETA, AIError, ParsedTask, TodoAI
 from app.main import app
 from app.routers.ai import get_ai
+from tests.helpers import sign_up
 
 # --- Endpoints, with a fake AI ---------------------------------------------------------------
+
+
+@pytest.fixture
+def client(client):
+    """The AI endpoints need a signed-in user, so every test here starts signed in."""
+    sign_up(client)
+    return client
 
 
 class FakeAI:

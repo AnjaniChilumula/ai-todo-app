@@ -5,11 +5,11 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
-from sqlmodel import Session, select
+from sqlmodel import select
 
 from app.ai.client import AIError, TodoAI
+from app.auth.deps import CurrentUser, SessionDep
 from app.config import Settings, get_settings
-from app.db import get_session
 from app.models import Priority, Todo, as_utc
 
 router = APIRouter(prefix="/api/ai", tags=["ai"])
@@ -31,7 +31,6 @@ def get_ai(settings: Annotated[Settings, Depends(get_settings)]) -> TodoAI:
 
 
 AIDep = Annotated[TodoAI, Depends(get_ai)]
-SessionDep = Annotated[Session, Depends(get_session)]
 
 
 class ParseRequest(BaseModel):
@@ -62,7 +61,7 @@ def _read_due_at(value: str | None, tz: ZoneInfo) -> datetime | None:
 
 
 @router.post("/parse", response_model=ParseResponse)
-def parse_task(data: ParseRequest, ai: AIDep) -> ParseResponse:
+def parse_task(data: ParseRequest, user: CurrentUser, ai: AIDep) -> ParseResponse:
     """Smart Add: turn "call mom tomorrow 6pm, high priority" into task fields."""
     try:
         tz = ZoneInfo(data.timezone)
@@ -93,10 +92,12 @@ class BreakdownResponse(BaseModel):
 
 
 @router.post("/breakdown", response_model=BreakdownResponse)
-def breakdown(data: BreakdownRequest, ai: AIDep, session: SessionDep) -> BreakdownResponse:
+def breakdown(
+    data: BreakdownRequest, user: CurrentUser, ai: AIDep, session: SessionDep
+) -> BreakdownResponse:
     """Break it down: suggest subtasks for a task, skipping the ones it already has."""
     todo = session.get(Todo, data.todo_id)
-    if todo is None:
+    if todo is None or todo.owner_id != user.id:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Task not found")
     if todo.parent_id is not None:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "Subtasks cannot be broken down further")

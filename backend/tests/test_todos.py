@@ -1,3 +1,15 @@
+import pytest
+
+from tests.helpers import sign_up
+
+
+@pytest.fixture
+def client(client):
+    """The todos API needs a signed-in user, so every test here starts signed in."""
+    sign_up(client)
+    return client
+
+
 def create(client, **fields):
     response = client.post("/api/todos", json={"title": "Task", **fields})
     assert response.status_code == 201, response.text
