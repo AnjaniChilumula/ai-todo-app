@@ -8,7 +8,7 @@ import hashlib
 import secrets
 from datetime import timedelta
 
-from fastapi import Response
+from fastapi import Request, Response
 from sqlmodel import Session, col, delete
 
 from app.models import User, UserSession, as_utc, utcnow
@@ -86,6 +86,18 @@ def end_all_sessions(db: Session, user_id: int, keep_session_id: str | None = No
     result = db.exec(query)
     db.commit()
     return result.rowcount
+
+
+def sign_in(db: Session, user: User, request: Request, response: Response, secure: bool) -> None:
+    """Give the browser a brand-new session and drop the one it had before, if any. A new token
+    on every sign-in prevents session fixation. Used by password and Google sign-in."""
+    end_session(db, request.cookies.get(COOKIE_NAME))
+    token = create_session(db, user, request.headers.get("user-agent"))
+    set_session_cookie(response, token, secure)
+    user.last_login_at = utcnow()
+    db.add(user)
+    db.commit()
+    db.refresh(user)
 
 
 def set_session_cookie(response: Response, token: str, secure: bool) -> None:

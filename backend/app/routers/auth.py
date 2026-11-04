@@ -2,30 +2,18 @@ import math
 
 from fastapi import APIRouter, HTTPException, Request, Response, status
 from sqlalchemy.exc import IntegrityError
-from sqlmodel import Session, select
+from sqlmodel import select
 
 from app.auth import sessions
 from app.auth.deps import CurrentUser, SessionDep
 from app.auth.passwords import hash_password, password_problem, verify_password
 from app.auth.ratelimit import login_limiter
-from app.config import Settings, SettingsDep
-from app.models import LoginRequest, SignupRequest, User, UserRead, utcnow
+from app.config import SettingsDep
+from app.models import LoginRequest, SignupRequest, User, UserRead
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 WRONG_CREDENTIALS = "Email or password is incorrect."
-
-
-def _sign_in(db: Session, user: User, request: Request, response: Response, settings: Settings):
-    """Give the browser a brand-new session (a new token on every sign-in prevents session
-    fixation) and drop the one it had before, if any."""
-    sessions.end_session(db, request.cookies.get(sessions.COOKIE_NAME))
-    token = sessions.create_session(db, user, request.headers.get("user-agent"))
-    sessions.set_session_cookie(response, token, settings.cookie_secure)
-    user.last_login_at = utcnow()
-    db.add(user)
-    db.commit()
-    db.refresh(user)
 
 
 @router.post("/signup", response_model=UserRead, status_code=status.HTTP_201_CREATED)
@@ -48,7 +36,7 @@ def signup(
         raise HTTPException(status.HTTP_409_CONFLICT, taken) from None
     db.refresh(user)
 
-    _sign_in(db, user, request, response, settings)
+    sessions.sign_in(db, user, request, response, settings.cookie_secure)
     return UserRead.from_user(user)
 
 
@@ -77,7 +65,7 @@ def login(
     if new_hash:
         user.password_hash = new_hash
 
-    _sign_in(db, user, request, response, settings)
+    sessions.sign_in(db, user, request, response, settings.cookie_secure)
     return UserRead.from_user(user)
 
 
@@ -86,6 +74,12 @@ def logout(request: Request, response: Response, db: SessionDep, settings: Setti
     """End this browser's session. Safe to call when already signed out."""
     sessions.end_session(db, request.cookies.get(sessions.COOKIE_NAME))
     sessions.clear_session_cookie(response, settings.cookie_secure)
+
+
+@router.get("/config")
+def auth_config(settings: SettingsDep) -> dict:
+    """Which ways to sign in are switched on, so the UI shows the right buttons."""
+    return {"password": True, "google": settings.google_enabled}
 
 
 @router.get("/me", response_model=UserRead)

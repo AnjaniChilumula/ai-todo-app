@@ -102,6 +102,8 @@ class User(SQLModel, table=True):
     email: str = Field(max_length=254, unique=True, index=True)  # always stored lower-case
     name: str = Field(max_length=80)
     password_hash: str | None = Field(default=None, max_length=255)
+    # Google's stable id for the person ("sub" claim). Set when they sign in with Google.
+    google_sub: str | None = Field(default=None, max_length=255, unique=True, index=True)
     role: Role = Role.user
     is_active: bool = True
     created_at: datetime = Field(default_factory=utcnow)
@@ -158,6 +160,7 @@ class UserRead(SQLModel):
     name: str
     role: Role
     has_password: bool
+    google_linked: bool
     created_at: datetime
 
     @classmethod
@@ -168,5 +171,6 @@ class UserRead(SQLModel):
             name=user.name,
             role=user.role,
             has_password=user.password_hash is not None,
+            google_linked=user.google_sub is not None,
             created_at=as_utc(user.created_at),
         )
