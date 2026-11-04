@@ -122,6 +122,13 @@ Dates are returned in UTC (ending in `Z`). AI endpoints return `503` with setup 
 | POST | `/api/auth/login` | `{"email", "password"}`: signs in |
 | POST | `/api/auth/logout` | Signs this browser out |
 | GET | `/api/auth/me` | The signed-in user, or `401` |
+| PATCH | `/api/account` | `{"name"}`: rename yourself |
+| POST | `/api/account/password` | `{"current_password", "new_password"}`: signs out your other devices |
+| GET | `/api/account/sessions` | Devices you're signed in on ("Chrome on Windows"), this one marked `current` |
+| DELETE | `/api/account/sessions/{id}` | Sign out one device |
+| DELETE | `/api/account/sessions?others=true` | Sign out everywhere else |
+| GET | `/api/admin/users` | Admins only: accounts with role, status, task count, last activity |
+| PATCH | `/api/admin/users/{id}` | Admins only: `{"is_active"}` and/or `{"role"}`; you can't change your own account |
 
 How sign-in is protected:
 - **Passwords** are hashed with Argon2 and never stored or returned

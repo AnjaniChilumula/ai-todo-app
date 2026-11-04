@@ -77,13 +77,15 @@ def end_session(db: Session, token: str | None) -> None:
         db.commit()
 
 
-def end_all_sessions(db: Session, user_id: int, keep_session_id: str | None = None) -> None:
-    """Sign a user out everywhere, optionally keeping one session (the current device)."""
+def end_all_sessions(db: Session, user_id: int, keep_session_id: str | None = None) -> int:
+    """Sign a user out everywhere, optionally keeping one session (the current device).
+    Returns how many sessions were ended."""
     query = delete(UserSession).where(col(UserSession.user_id) == user_id)
     if keep_session_id is not None:
         query = query.where(col(UserSession.id) != keep_session_id)
-    db.exec(query)
+    result = db.exec(query)
     db.commit()
+    return result.rowcount
 
 
 def set_session_cookie(response: Response, token: str, secure: bool) -> None:
