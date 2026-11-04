@@ -4,8 +4,17 @@ from sqlalchemy.pool import StaticPool
 from sqlmodel import create_engine
 
 from app import db
+from app.auth.ratelimit import login_limiter
 from app.config import Settings, get_settings
 from app.main import app
+
+
+@pytest.fixture(autouse=True)
+def reset_login_limiter():
+    """Failed sign-in counts are kept in memory; start every test with none."""
+    login_limiter.clear()
+    yield
+    login_limiter.clear()
 
 
 @pytest.fixture
