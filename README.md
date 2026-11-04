@@ -132,6 +132,26 @@ How sign-in is protected:
 - **Cross-site requests**: any `POST`/`PATCH`/`DELETE` from another website's origin is refused (`403`)
 - Set `COOKIE_SECURE=true` in `backend/.env` when the app is served over HTTPS
 
+Every task belongs to the account that created it. All `/api/todos` and `/api/ai/*` endpoints need a session
+(`401` without one), and another user's task id answers `404` exactly like a missing one.
+
+### Admin commands
+
+Run from `backend/` with the virtualenv active:
+
+```bash
+python -m app.cli make-admin you@example.com
+```
+
+gives an account the admin role (this is how the first admin is created).
+
+```bash
+python -m app.cli claim-tasks you@example.com
+```
+
+moves tasks that have no owner, i.e. tasks you made in v1 before accounts existed, into that account. Sign up in the
+app first, then run it once.
+
 ## Run the frontend
 
 Requires Node.js 20+ (22 LTS recommended). With the backend running, in a second terminal:
