@@ -1,7 +1,7 @@
 from datetime import UTC, datetime
 from enum import StrEnum
 
-from pydantic import field_validator
+from pydantic import EmailStr, field_validator
 from sqlmodel import Field, SQLModel
 
 
@@ -9,6 +9,11 @@ class Priority(StrEnum):
     low = "low"
     medium = "medium"
     high = "high"
+
+
+class Role(StrEnum):
+    user = "user"
+    admin = "admin"
 
 
 def utcnow() -> datetime:
@@ -80,3 +85,85 @@ class TodoRead(TodoBase):
     @classmethod
     def _timestamps_utc(cls, value: datetime) -> datetime:
         return as_utc(value)
+
+
+# --- Accounts and sessions -------------------------------------------------------------------
+
+
+class User(SQLModel, table=True):
+    """An account. Google-only accounts have no password_hash."""
+
+    __tablename__ = "users"
+
+    id: int | None = Field(default=None, primary_key=True)
+    email: str = Field(max_length=254, unique=True, index=True)  # always stored lower-case
+    name: str = Field(max_length=80)
+    password_hash: str | None = Field(default=None, max_length=255)
+    role: Role = Role.user
+    is_active: bool = True
+    created_at: datetime = Field(default_factory=utcnow)
+    last_login_at: datetime | None = None
+
+
+class UserSession(SQLModel, table=True):
+    """A signed-in browser. The cookie holds a random token; only its SHA-256 hash is stored."""
+
+    __tablename__ = "user_sessions"
+
+    id: str = Field(primary_key=True, max_length=64)  # sha256(token) as hex
+    user_id: int = Field(foreign_key="users.id", index=True)
+    created_at: datetime = Field(default_factory=utcnow)
+    last_seen_at: datetime = Field(default_factory=utcnow)
+    expires_at: datetime
+    user_agent: str = Field(default="", max_length=300)
+
+
+class SignupRequest(SQLModel):
+    name: str = Field(min_length=1, max_length=80)
+    email: EmailStr
+    password: str = Field(min_length=8, max_length=128)
+
+    @field_validator("name")
+    @classmethod
+    def _strip_name(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("Name cannot be empty")
+        return value
+
+    @field_validator("email")
+    @classmethod
+    def _lower_email(cls, value: str) -> str:
+        return value.lower()
+
+
+class LoginRequest(SQLModel):
+    email: EmailStr
+    password: str = Field(min_length=1, max_length=128)
+
+    @field_validator("email")
+    @classmethod
+    def _lower_email(cls, value: str) -> str:
+        return value.lower()
+
+
+class UserRead(SQLModel):
+    """What the API shows about an account: never the password hash."""
+
+    id: int
+    email: str
+    name: str
+    role: Role
+    has_password: bool
+    created_at: datetime
+
+    @classmethod
+    def from_user(cls, user: User) -> "UserRead":
+        return cls(
+            id=user.id,
+            email=user.email,
+            name=user.name,
+            role=user.role,
+            has_password=user.password_hash is not None,
+            created_at=as_utc(user.created_at),
+        )

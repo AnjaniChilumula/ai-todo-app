@@ -1,15 +1,13 @@
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from typing import Annotated
 
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app import db
-from app.config import Settings, get_settings
-from app.routers import ai, todos
-
-SettingsDep = Annotated[Settings, Depends(get_settings)]
+from app.auth.csrf import add_origin_check
+from app.config import SettingsDep, get_settings
+from app.routers import ai, auth, todos
 
 
 @asynccontextmanager
@@ -18,15 +16,18 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
     yield
 
 
-app = FastAPI(title="AI Todo App API", version="0.1.0", lifespan=lifespan)
+app = FastAPI(title="AI Todo App API", version="0.2.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=get_settings().cors_origins,
+    allow_credentials=True,  # allow the session cookie on calls from the listed origins
     allow_methods=["*"],
     allow_headers=["*"],
 )
+add_origin_check(app, get_settings().cors_origins)
 
+app.include_router(auth.router)
 app.include_router(todos.router)
 app.include_router(ai.router)
 
