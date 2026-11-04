@@ -107,6 +107,24 @@ export function ChevronDownIcon(props) {
   )
 }
 
+export function MonitorIcon(props) {
+  return (
+    <Icon {...props}>
+      <rect x="3" y="4" width="18" height="12" rx="2" />
+      <path d="M8 20h8M12 16v4" />
+    </Icon>
+  )
+}
+
+export function PhoneIcon(props) {
+  return (
+    <Icon {...props}>
+      <rect x="7" y="2" width="10" height="20" rx="2" />
+      <path d="M11 18h2" />
+    </Icon>
+  )
+}
+
 export function SlidersIcon(props) {
   return (
     <Icon {...props}>
