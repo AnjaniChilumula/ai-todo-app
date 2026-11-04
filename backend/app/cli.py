@@ -39,9 +39,7 @@ def make_admin(session: Session, email: str) -> str:
 def claim_tasks(session: Session, email: str) -> int:
     """Give every task without an owner to this account. Returns how many moved."""
     user = find_user(session, email)
-    result = session.exec(
-        update(Todo).where(col(Todo.owner_id).is_(None)).values(owner_id=user.id)
-    )
+    result = session.exec(update(Todo).where(col(Todo.owner_id).is_(None)).values(owner_id=user.id))
     session.commit()
     return result.rowcount
 
