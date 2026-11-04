@@ -42,6 +42,8 @@ async def google_callback(
         return _back_to_sign_in(settings, "google_unverified")
 
     user = account_for_google(db, claims)
+    if user is None:
+        return _back_to_sign_in(settings, "google_conflict")
     if not user.is_active:
         return _back_to_sign_in(settings, "disabled")
 

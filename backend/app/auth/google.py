@@ -34,12 +34,13 @@ def get_google(settings: SettingsDep):
     return client
 
 
-def account_for_google(db: Session, claims: dict) -> User:
+def account_for_google(db: Session, claims: dict) -> User | None:
     """Find or create the account for a verified Google identity.
 
     1. An account already linked to this Google id.
     2. Otherwise an account with the same email: Google has verified the email, so it's the same
-       person, and the accounts are linked.
+       person, and the accounts are linked. If that account is already linked to a *different*
+       Google id, return None rather than guess which Google account is the right one.
     3. Otherwise a new account without a password (one can be set later in Settings).
     """
     sub = claims["sub"]
@@ -48,7 +49,9 @@ def account_for_google(db: Session, claims: dict) -> User:
     user = db.exec(select(User).where(User.google_sub == sub)).first()
     if user is None:
         user = db.exec(select(User).where(User.email == email)).first()
-        if user is not None and user.google_sub is None:
+        if user is not None:
+            if user.google_sub is not None:
+                return None
             user.google_sub = sub
     if user is None:
         name = (claims.get("name") or email.split("@")[0]).strip()[:80] or "Google user"
