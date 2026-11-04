@@ -14,7 +14,7 @@ SettingsDep = Annotated[Settings, Depends(get_settings)]
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
-    db.init_db()
+    db.migrate()
     yield
 
 
