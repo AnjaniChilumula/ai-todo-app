@@ -88,6 +88,12 @@ def logout(request: Request, response: Response, db: SessionDep, settings: Setti
     sessions.clear_session_cookie(response, settings.cookie_secure)
 
 
+@router.get("/config")
+def auth_config(settings: SettingsDep) -> dict:
+    """Which ways to sign in are switched on, so the UI shows the right buttons."""
+    return {"password": True, "google": settings.google_enabled}
+
+
 @router.get("/me", response_model=UserRead)
 def me(user: CurrentUser) -> UserRead:
     """The signed-in user, or 401. The frontend calls this on startup."""
